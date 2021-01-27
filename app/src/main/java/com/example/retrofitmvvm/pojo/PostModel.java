@@ -3,11 +3,12 @@ package com.example.retrofitmvvm.pojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+
 public class PostModel {
     @SerializedName("feed")
     @Expose
     private Feed feed;
-    //root
 
     public Feed getFeed() {
         return feed;

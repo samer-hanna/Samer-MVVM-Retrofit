@@ -14,20 +14,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.retrofitmvvm.R;
+import com.example.retrofitmvvm.pojo.App;
 import com.example.retrofitmvvm.pojo.entry.Entry1;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+
 public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.MyViewHolder> {
 
     private Context context;
     private ArrayList<Entry1> entries;
+    Realm realm;
+
 
 
     public AppsAdapter(Context context, ArrayList<Entry1> entries) {
         this.context = context;
         this.entries = entries;
+
+        realm = Realm.getDefaultInstance();
+
+
     }
 
     @NonNull
@@ -60,6 +70,25 @@ public class AppsAdapter extends RecyclerView.Adapter<AppsAdapter.MyViewHolder> 
 
             }
         });
+
+        //////////////////////////////////////////
+        //Realm database
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                App app = realm.createObject(App.class);
+                app.setAppName(holder.appName.getText().toString());
+                app.setAppSummary(entries.get(position).getSummary().getLabel());
+                app.setAppLink(entries.get(position).getId().getLabel());
+                app.appImages.add(entries.get(position).getImage().get(0).getLabel());
+                app.appImages.add(entries.get(position).getImage().get(1).getLabel());
+                app.appImages.add(entries.get(position).getImage().get(2).getLabel());
+           }
+        });
+
+
+
+        /////////////////////////////////////////
 
 
 
